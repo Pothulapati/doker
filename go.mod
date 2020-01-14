@@ -10,6 +10,7 @@ require (
 	github.com/docker/go-units v0.4.0 // indirect
 	github.com/googleapis/gnostic v0.2.0 // indirect
 	github.com/julienschmidt/httprouter v1.3.0
+	github.com/olekukonko/tablewriter v0.0.4
 	github.com/opencontainers/go-digest v1.0.0-rc1 // indirect
 	github.com/spf13/cobra v0.0.5
 	golang.org/x/net v0.0.0-20191209160850-c0dbc17a3553 // indirect
