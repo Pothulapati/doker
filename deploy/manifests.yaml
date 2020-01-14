@@ -4,15 +4,15 @@ metadata:
   name: image-loader
   namespace: default
   labels:
-    k8s-app: image-loader
+    app: images
 spec:
   selector:
     matchLabels:
-      name: image-loader
+      app: images
   template:
     metadata:
       labels:
-        name: image-loader
+        app: images
     spec:
       containers:
       - name: image-loader
@@ -20,16 +20,23 @@ spec:
         imagePullPolicy: Always
         ports:
         - containerPort: 3000
+        - containerPort: 80
         securityContext:
           privileged: true
         volumeMounts:
         - name: host-root-volume
           mountPath: /host
           readOnly: true
+        - name: host-run
+          mountPath: /var/run/docker.sock
+          readOnly: true
       volumes:
       - name: host-root-volume
         hostPath:
           path: /
+      - name: host-run
+        hostPath:
+          path: /var/run/docker.sock
       hostNetwork: true
       hostPID: true
       restartPolicy: Always

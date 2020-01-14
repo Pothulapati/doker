@@ -2,32 +2,27 @@ package main
 
 import (
 	"fmt"
-	execute "github.com/alexellis/go-execute/pkg/v1"
-	"github.com/julienschmidt/httprouter"
+	"image-loader/pkg/docker"
 	"image-loader/pkg/handlers"
 	"log"
 	"net/http"
+
+	"github.com/julienschmidt/httprouter"
 )
 
 func main() {
 	router := httprouter.New()
-	router.PUT("/image_load", handlers.LoadImage)
 	router.GET("/", func(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
-		cmd := execute.ExecTask{
-			Command:      "docker",
-			Args:         []string{"images"},
-			StreamStdio:  false,
-		}
+		w.Write([]byte("hi"))
 
-		res, err := cmd.Execute()
-		if err!=nil{
-			w.Write([]byte("Couldn't execute docker:%s"))
+	})
+	router.PUT("/image_load", handlers.LoadImage)
+	router.GET("/list", func(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
+		imagesResp, err := docker.GetDockerImages(r.Context())
+		if err != nil {
+			log.Fatal(err)
 		}
-		if res.ExitCode != 0 {
-			panic("Non-zero exit code: " + res.Stderr)
-		}
-
-		w.Write([]byte(res.Stdout))
+		w.Write(imagesResp)
 
 	})
 

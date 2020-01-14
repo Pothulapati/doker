@@ -7,3 +7,6 @@ push:
 
 dep:
 		kubectl apply -f ./deploy/manifests.yaml
+
+plugin:
+		GO111MODULE=on  go build -o images ./cmd/plugin
