@@ -45,17 +45,16 @@ func (k *KubernetesAPI) GetPodsWithDefaultLabels() (*v1.PodList, error) {
 	if err != nil {
 		return nil, err
 	}
-	fmt.Printf("Got %d Nodes", len(pods.Items))
 
 	return pods, nil
 }
 
-func (k *KubernetesAPI) SendPodGetRequest(name, namespace string) (string, error) {
+func (k *KubernetesAPI) SendPodGetRequest(name, namespace, path string) (string, error) {
 	req := k.CoreV1().RESTClient().Get().
 		Resource("pods").
 		Namespace(namespace).
 		Name(name).
-		SubResource("proxy").Suffix("/list")
+		SubResource("proxy").Suffix(fmt.Sprintf("/%s", path))
 
 	res := req.Do()
 	raw, err := res.Raw()

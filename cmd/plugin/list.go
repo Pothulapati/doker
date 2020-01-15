@@ -7,7 +7,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/olekukonko/tablewriter"
+	"github.com/docker/cli/cli/command/formatter"
+	"github.com/docker/cli/opts"
 
 	"github.com/docker/docker/api/types"
 	"github.com/spf13/cobra"
@@ -18,12 +19,30 @@ type Node struct {
 	Images   []types.ImageSummary
 }
 
+type imagesOptions struct {
+	matchName string
+
+	quiet       bool
+	all         bool
+	noTrunc     bool
+	showDigests bool
+	format      string
+	filter      opts.FilterOpt
+}
+
 func newListCmd() *cobra.Command {
+
+	options := imagesOptions{filter: opts.NewFilterOpt()}
+
 	// checkCmd represent kubectl pg check.
 	var listCmd = &cobra.Command{
 		Use:   "list",
 		Short: "list gets all the images in the nodes present in the cluster.",
 		RunE: func(cmd *cobra.Command, args []string) error {
+			if len(args) > 0 {
+				options.matchName = args[0]
+			}
+
 			api, err := k8s.NewKubernetesAPI(kubeconfigPath, kubeContext)
 			if err != nil {
 				return err
@@ -34,13 +53,20 @@ func newListCmd() *cobra.Command {
 			}
 
 			for _, node := range nodes {
-				println(node.NodeName)
-				table := tablewriter.NewWriter(os.Stdout)
-				table.SetHeader([]string{"REPOSITORY", "IMAGE ID"})
-				for _, image := range node.Images {
-					table.Append([]string{ArrayToString(image.RepoTags), image.ID[13:24]})
+				fmt.Printf("\n%s\n\n", node.NodeName)
+				imageCtx := formatter.ImageContext{
+					Context: formatter.Context{
+						Output: os.Stdout,
+						Format: formatter.NewImageFormat(formatter.TableFormatKey, options.quiet, options.showDigests),
+						Trunc:  !options.noTrunc,
+					},
+					Digest: options.showDigests,
 				}
-				table.Render() // Send output
+
+				err := formatter.ImageWrite(imageCtx, node.Images)
+				if err != nil {
+					return err
+				}
 			}
 
 			return nil
@@ -50,6 +76,15 @@ images list
 images list -l
 `,
 	}
+
+	flags := listCmd.Flags()
+
+	flags.BoolVarP(&options.quiet, "quiet", "q", false, "Only show numeric IDs")
+	flags.BoolVarP(&options.all, "all", "a", false, "Show all images (default hides intermediate images)")
+	flags.BoolVar(&options.noTrunc, "no-trunc", false, "Don't truncate output")
+	flags.BoolVar(&options.showDigests, "digests", false, "Show digests")
+	flags.StringVar(&options.format, "format", "", "Pretty-print images using a Go template")
+	flags.VarP(&options.filter, "filter", "f", "Filter output based on conditions provided")
 
 	return listCmd
 }
@@ -65,11 +100,10 @@ func GetNodeImages(k8sAPI k8s.KubernetesAPI) ([]Node, error) {
 
 	var Nodes []Node
 	for _, pod := range pods.Items {
-		resp, err := k8sAPI.SendPodGetRequest(pod.Name, k8s.ImagesNamespace)
+		resp, err := k8sAPI.SendPodGetRequest(pod.Name, k8s.ImagesNamespace, "list")
 		if err != nil {
 			return nil, err
 		}
-		fmt.Println()
 		reader := strings.NewReader(resp)
 		var imageSummaries []types.ImageSummary
 		err = json.NewDecoder(reader).Decode(&imageSummaries)

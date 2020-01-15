@@ -1,17 +1,17 @@
 package main
 
 import (
-	"github.com/spf13/cobra"
 	"os"
+
+	"github.com/spf13/cobra"
 )
 
 var (
-
-	apiAddr               string // An empty value means "use the Kubernetes configuration"
-	kubeconfigPath        string
-	kubeContext           string
-	impersonate           string
-	verbose               bool
+	apiAddr        string // An empty value means "use the Kubernetes configuration"
+	kubeconfigPath string
+	kubeContext    string
+	impersonate    string
+	verbose        bool
 
 	RootCmd = &cobra.Command{
 		Use:   "images",
@@ -28,6 +28,7 @@ func init() {
 	RootCmd.PersistentFlags().StringVar(&apiAddr, "api-addr", "", "Override kubeconfig and communicate directly with the control plane at host:port (mostly for testing)")
 	RootCmd.PersistentFlags().BoolVar(&verbose, "verbose", false, "Turn on debug logging")
 	RootCmd.AddCommand(newListCmd())
+	RootCmd.AddCommand(newPruneCmd())
 }
 
 func main() {

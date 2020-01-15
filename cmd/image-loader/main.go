@@ -25,7 +25,14 @@ func main() {
 		w.Write(imagesResp)
 
 	})
+	router.GET("/prune", func(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
+		imagesResp, err := docker.DockerPruneImages(r.Context())
+		if err != nil {
+			log.Fatal(err)
+		}
+		w.Write(imagesResp)
 
+	})
 	fmt.Printf("Starting Server at 3000")
 	err := http.ListenAndServe("0.0.0.0:3000", router)
 	if err != nil {
