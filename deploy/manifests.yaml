@@ -24,16 +24,10 @@ spec:
         securityContext:
           privileged: true
         volumeMounts:
-        - name: host-root-volume
-          mountPath: /host
-          readOnly: true
         - name: host-run
           mountPath: /var/run/docker.sock
           readOnly: true
       volumes:
-      - name: host-root-volume
-        hostPath:
-          path: /
       - name: host-run
         hostPath:
           path: /var/run/docker.sock
