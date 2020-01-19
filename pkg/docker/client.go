@@ -12,7 +12,7 @@ import (
 // Returns a json response of all the docker images present
 func GetDockerImages(ctx context.Context) ([]byte, error) {
 
-	cli, err := client.NewClientWithOpts()
+	cli, err := client.NewClientWithOpts(client.WithVersion("1.37"))
 	if err != nil {
 		return nil, err
 	}
