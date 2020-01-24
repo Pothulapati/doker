@@ -51,6 +51,8 @@ func (k *KubernetesAPI) GetPodsWithDefaultLabels() (*v1.PodList, error) {
 	return pods, nil
 }
 
+// SendMultiPartHttpRequest Creates a post kubernetes request to the pod, with the given reader
+// as a multipart form data
 func (k *KubernetesAPI) SendMultiPartHttpRequest(name, namespace, path string, r io.Reader) ([]byte, error) {
 	req := k.CoreV1().RESTClient().Post().
 		Resource("pods").

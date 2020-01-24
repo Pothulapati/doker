@@ -43,7 +43,7 @@ func DockerPruneImages(ctx context.Context) ([]byte, error) {
 	return json.Marshal(report)
 }
 
-// GetDockerImages returns an Io Reader for the given imageids
+// GetDockerImages returns an Io Reader for the given image names
 func GetDockerImages(ctx context.Context, imagIds []string) (io.ReadCloser, error) {
 
 	cli, err := client.NewClientWithOpts(client.WithVersion("1.37"))

@@ -4,11 +4,22 @@ import (
 	"fmt"
 	"image-loader/pkg/docker"
 	"image-loader/pkg/handlers"
-	"log"
 	"net/http"
+	"os"
+
+	log "github.com/sirupsen/logrus"
 
 	"github.com/julienschmidt/httprouter"
 )
+
+type Logger struct {
+	handler http.Handler
+}
+
+func (l Logger) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	log.Info(r.Method, r.URL.Path)
+	l.handler.ServeHTTP(w, r)
+}
 
 func main() {
 	router := httprouter.New()
@@ -33,9 +44,21 @@ func main() {
 		w.Write(imagesResp)
 
 	})
-	fmt.Printf("Starting Server at 3000")
-	err := http.ListenAndServe("0.0.0.0:3000", router)
+	fmt.Println("Starting Server at 3000")
+	err := http.ListenAndServe("0.0.0.0:3000", Logger{handler: router})
 	if err != nil {
 		log.Fatal(err)
 	}
+}
+
+func init() {
+	// Log as JSON instead of the default ASCII formatter.
+	log.SetFormatter(&log.JSONFormatter{})
+
+	// Output to stdout instead of the default stderr
+	// Can be any io.Writer, see below for File example
+	log.SetOutput(os.Stdout)
+
+	// Log Everything
+	log.SetLevel(log.InfoLevel)
 }
