@@ -1,12 +1,13 @@
 package k8s
 
 import (
+	"bytes"
 	"fmt"
-
-	v12 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"io"
+	"mime/multipart"
 
 	v1 "k8s.io/api/core/v1"
-
+	v12 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
 	_ "k8s.io/client-go/plugin/pkg/client/auth/gcp"
 	"k8s.io/client-go/rest"
@@ -48,6 +49,42 @@ func (k *KubernetesAPI) GetPodsWithDefaultLabels() (*v1.PodList, error) {
 	}
 
 	return pods, nil
+}
+
+func (k *KubernetesAPI) SendMultiPartHttpRequest(name, namespace, path string, r io.Reader) ([]byte, error) {
+	req := k.CoreV1().RESTClient().Post().
+		Resource("pods").
+		Namespace(namespace).
+		Name(name).
+		SubResource("proxy").Suffix(fmt.Sprintf("/%s", path))
+
+	// Push the reader into the http client as a file
+	var data bytes.Buffer
+	_, err := data.ReadFrom(r)
+	if err != nil {
+		return nil, err
+	}
+
+	body := new(bytes.Buffer)
+	writer := multipart.NewWriter(body)
+	part, err := writer.CreateFormFile("file", "docker.tar")
+	if err != nil {
+		return nil, err
+	}
+	_, err = part.Write(data.Bytes())
+	if err != nil {
+		return nil, err
+	}
+
+	err = writer.Close()
+	if err != nil {
+		return nil, err
+	}
+
+	req.Body(body)
+	req.SetHeader("Content-Type", writer.FormDataContentType())
+
+	return req.DoRaw()
 }
 
 func (k *KubernetesAPI) SendPodGetRequest(name, namespace, path string) (string, error) {

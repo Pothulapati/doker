@@ -1,0 +1,57 @@
+package main
+
+import (
+	"context"
+	"fmt"
+	"image-loader/pkg/docker"
+	"image-loader/pkg/k8s"
+
+	"github.com/spf13/cobra"
+)
+
+func newLoadCmd() *cobra.Command {
+
+	// checkCmd represent kubectl pg check.
+	var loadCmd = &cobra.Command{
+		Use:   "load",
+		Short: "loads an image onto your kubernetes cluster",
+		RunE: func(cmd *cobra.Command, args []string) error {
+
+			api, err := k8s.NewKubernetesAPI(kubeconfigPath, kubeContext)
+			if err != nil {
+				return err
+			}
+
+			pods, err := api.GetPodsWithDefaultLabels()
+			if err != nil {
+				return err
+			}
+
+			for _, pod := range pods.Items {
+
+				fmt.Println("Loading Image to ", pod.Spec.NodeName)
+				// Talk to the docker client and save the image into a file
+				rc, err := docker.GetDockerImages(context.Background(), args)
+				if err != nil {
+					return err
+				}
+
+				rs, err := api.SendMultiPartHttpRequest(pod.Name, k8s.ImagesNamespace, "load", rc)
+				if err != nil {
+					return err
+				}
+
+				fmt.Println(string(rs))
+
+			}
+
+			return nil
+		},
+		Example: `
+images load deislabs/smi-metrics:0.2.0
+images load deislabs/smi-metrics:0.2.0 -l node=sdsds"
+`,
+	}
+
+	return loadCmd
+}

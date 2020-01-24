@@ -29,6 +29,7 @@ func init() {
 	RootCmd.PersistentFlags().BoolVar(&verbose, "verbose", false, "Turn on debug logging")
 	RootCmd.AddCommand(newListCmd())
 	RootCmd.AddCommand(newPruneCmd())
+	RootCmd.AddCommand(newLoadCmd())
 }
 
 func main() {

@@ -16,9 +16,9 @@ func main() {
 		w.Write([]byte("hi"))
 
 	})
-	router.PUT("/image_load", handlers.LoadImage)
+	router.POST("/load", handlers.LoadImage)
 	router.GET("/list", func(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
-		imagesResp, err := docker.GetDockerImages(r.Context())
+		imagesResp, err := docker.ListDockerImages(r.Context())
 		if err != nil {
 			log.Fatal(err)
 		}
