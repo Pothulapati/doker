@@ -29,7 +29,7 @@ func newLoadCmd() *cobra.Command {
 
 			for _, pod := range pods.Items {
 
-				fmt.Println("Loading Image to ", pod.Spec.NodeName)
+				fmt.Println("Loading images to ", pod.Spec.NodeName)
 				// Talk to the docker client and save the image into a file
 				rc, err := docker.GetDockerImages(context.Background(), args)
 				if err != nil {
