@@ -57,7 +57,7 @@ func newListCmd() *cobra.Command {
 				imageCtx := formatter.ImageContext{
 					Context: formatter.Context{
 						Output: os.Stdout,
-						Format: formatter.NewImageFormat(formatter.TableFormatKey, options.quiet, options.showDigests),
+						Format: formatter.NewImageFormat(options.format, options.quiet, options.showDigests),
 						Trunc:  !options.noTrunc,
 					},
 					Digest: options.showDigests,
@@ -83,7 +83,7 @@ images list -l
 	flags.BoolVarP(&options.all, "all", "a", false, "Show all images (default hides intermediate images)")
 	flags.BoolVar(&options.noTrunc, "no-trunc", false, "Don't truncate output")
 	flags.BoolVar(&options.showDigests, "digests", false, "Show digests")
-	flags.StringVar(&options.format, "format", "", "Pretty-print images using a Go template")
+	flags.StringVar(&options.format, "format", formatter.TableFormatKey, "Pretty-print images using a Go template")
 	flags.VarP(&options.filter, "filter", "f", "Filter output based on conditions provided")
 
 	return listCmd

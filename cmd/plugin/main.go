@@ -27,7 +27,6 @@ func init() {
 	RootCmd.PersistentFlags().StringVar(&impersonate, "as", "", "Username to impersonate for Kubernetes operations")
 	RootCmd.PersistentFlags().StringVar(&apiAddr, "api-addr", "", "Override kubeconfig and communicate directly with the control plane at host:port (mostly for testing)")
 	RootCmd.PersistentFlags().BoolVar(&verbose, "verbose", false, "Turn on debug logging")
-	RootCmd.RunE = newListCmd().RunE
 	RootCmd.AddCommand(newListCmd())
 	RootCmd.AddCommand(newPruneCmd())
 	RootCmd.AddCommand(newLoadCmd())
