@@ -5,12 +5,13 @@ import (
 	"fmt"
 	"image-loader/pkg/k8s"
 	"os"
+	"strconv"
 	"strings"
 
 	"github.com/docker/cli/cli/command/formatter"
 	"github.com/docker/cli/opts"
-
 	"github.com/docker/docker/api/types"
+	"github.com/julienschmidt/httprouter"
 	"github.com/spf13/cobra"
 )
 
@@ -47,7 +48,7 @@ func newListCmd() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			nodes, err := GetNodeImages(*api)
+			nodes, err := GetNodeImages(*api, options.all)
 			if err != nil {
 				return err
 			}
@@ -90,7 +91,7 @@ images list -l
 }
 
 // GetNodeImages talks to the Kubernetes API and gets all the images from all nodes
-func GetNodeImages(k8sAPI k8s.KubernetesAPI) ([]Node, error) {
+func GetNodeImages(k8sAPI k8s.KubernetesAPI, all bool) ([]Node, error) {
 	// Talk to the Kubernetes API to get all endpoints of the service
 	// send a request to each of them using the Kubernetes API
 	pods, err := k8sAPI.GetPodsWithDefaultLabels()
@@ -98,9 +99,14 @@ func GetNodeImages(k8sAPI k8s.KubernetesAPI) ([]Node, error) {
 		return nil, err
 	}
 
+	// Decode all and filters params into http params
+	var params httprouter.Params
+	allParam := httprouter.Param{Key: "all", Value: strconv.FormatBool(all)}
+	params = append(params, allParam)
+
 	var Nodes []Node
 	for _, pod := range pods.Items {
-		resp, err := k8sAPI.SendPodGetRequest(pod.Name, k8s.ImagesNamespace, "list")
+		resp, err := k8sAPI.SendPodGetRequestWithParams(pod.Name, k8s.ImagesNamespace, "list", params)
 		if err != nil {
 			return nil, err
 		}

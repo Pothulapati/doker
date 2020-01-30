@@ -48,8 +48,8 @@ func newLoadCmd() *cobra.Command {
 			return nil
 		},
 		Example: `
-images load deislabs/smi-metrics:0.2.0
-images load deislabs/smi-metrics:0.2.0 -l node=sdsds"
+images load hello-world
+images load hello-world-1 hello-world-2"
 `,
 	}
 

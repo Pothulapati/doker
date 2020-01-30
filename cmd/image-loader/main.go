@@ -6,10 +6,12 @@ import (
 	"image-loader/pkg/handlers"
 	"net/http"
 	"os"
+	"strconv"
 
-	log "github.com/sirupsen/logrus"
+	"github.com/docker/docker/api/types/filters"
 
 	"github.com/julienschmidt/httprouter"
+	log "github.com/sirupsen/logrus"
 )
 
 type Logger struct {
@@ -29,7 +31,16 @@ func main() {
 	})
 	router.POST("/load", handlers.LoadImage)
 	router.GET("/list", func(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
-		imagesResp, err := docker.ListDockerImages(r.Context())
+		// Get parametrs for filtering, all and pass it to load images
+
+		urlParams := r.URL.Query()
+		all, err := strconv.ParseBool(urlParams.Get("all"))
+		if err != nil {
+			log.Errorf("Couldn't parse all parameter: ", err.Error())
+			return
+		}
+
+		imagesResp, err := docker.ListDockerImages(r.Context(), all, filters.Args{})
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -37,7 +48,22 @@ func main() {
 
 	})
 	router.GET("/prune", func(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
-		imagesResp, err := docker.DockerPruneImages(r.Context())
+
+		dangling := true
+		urlParams := r.URL.Query()
+		all, err := strconv.ParseBool(urlParams.Get("all"))
+		if err != nil {
+			log.Errorf("Couldn't parse all parameter: ", err.Error())
+			return
+		}
+
+		if all {
+			dangling = false
+		}
+		pruneFilters := filters.NewArgs()
+		pruneFilters.Add("dangling", fmt.Sprintf("%v", dangling))
+
+		imagesResp, err := docker.DockerPruneImages(r.Context(), pruneFilters)
 		if err != nil {
 			log.Fatal(err)
 		}

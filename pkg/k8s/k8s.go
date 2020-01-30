@@ -6,6 +6,8 @@ import (
 	"io"
 	"mime/multipart"
 
+	"github.com/julienschmidt/httprouter"
+
 	v1 "k8s.io/api/core/v1"
 	v12 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
@@ -89,12 +91,17 @@ func (k *KubernetesAPI) SendMultiPartHttpRequest(name, namespace, path string, r
 	return req.DoRaw()
 }
 
-func (k *KubernetesAPI) SendPodGetRequest(name, namespace, path string) (string, error) {
+func (k *KubernetesAPI) SendPodGetRequestWithParams(name, namespace, path string, params httprouter.Params) (string, error) {
 	req := k.CoreV1().RESTClient().Get().
 		Resource("pods").
 		Namespace(namespace).
 		Name(name).
 		SubResource("proxy").Suffix(fmt.Sprintf("/%s", path))
+
+	// Add all http parameters
+	for _, param := range params {
+		req = req.Param(param.Key, param.Value)
+	}
 
 	res := req.Do()
 	raw, err := res.Raw()

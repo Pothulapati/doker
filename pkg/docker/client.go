@@ -11,14 +11,14 @@ import (
 )
 
 // ListDockerImages Returns a json response of all the docker images present
-func ListDockerImages(ctx context.Context) ([]byte, error) {
+func ListDockerImages(ctx context.Context, all bool, filters filters.Args) ([]byte, error) {
 
 	cli, err := client.NewClientWithOpts(client.WithVersion("1.37"))
 	if err != nil {
 		return nil, err
 	}
 
-	images, err := cli.ImageList(ctx, types.ImageListOptions{All: false})
+	images, err := cli.ImageList(ctx, types.ImageListOptions{All: all, Filters: filters})
 	if err != nil {
 		return nil, err
 	}
@@ -28,14 +28,14 @@ func ListDockerImages(ctx context.Context) ([]byte, error) {
 }
 
 // DockerPruneImages just prunes all the images
-func DockerPruneImages(ctx context.Context) ([]byte, error) {
+func DockerPruneImages(ctx context.Context, pruneFilters filters.Args) ([]byte, error) {
 
 	cli, err := client.NewClientWithOpts()
 	if err != nil {
 		return nil, err
 	}
 
-	report, err := cli.ImagesPrune(ctx, filters.Args{})
+	report, err := cli.ImagesPrune(ctx, pruneFilters)
 	if err != nil {
 		return nil, err
 	}
