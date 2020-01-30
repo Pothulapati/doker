@@ -121,12 +121,3 @@ func GetNodeImages(k8sAPI k8s.KubernetesAPI, all bool) ([]Node, error) {
 	}
 	return Nodes, err
 }
-
-func ArrayToString(arr []string) string {
-
-	if len(arr) == 0 {
-		return "-"
-	}
-
-	return arr[0]
-}

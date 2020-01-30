@@ -74,3 +74,18 @@ func LoadDockerImage(ctx context.Context, r io.Reader) ([]byte, error) {
 
 	return json.Marshal(resp)
 }
+
+func ListRunningContainers(ctx context.Context) ([]byte, error) {
+
+	cli, err := client.NewClientWithOpts(client.WithVersion("1.37"))
+	if err != nil {
+		return nil, err
+	}
+
+	images, err := cli.ContainerList(ctx, types.ContainerListOptions{})
+	if err != nil {
+		return nil, err
+	}
+
+	return json.Marshal(images)
+}

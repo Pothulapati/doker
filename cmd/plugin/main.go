@@ -30,6 +30,7 @@ func init() {
 	RootCmd.AddCommand(newListCmd())
 	RootCmd.AddCommand(newPruneCmd())
 	RootCmd.AddCommand(newLoadCmd())
+	RootCmd.AddCommand(newPsCmd())
 }
 
 func main() {
