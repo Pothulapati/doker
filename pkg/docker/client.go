@@ -30,7 +30,7 @@ func ListDockerImages(ctx context.Context, all bool, filters filters.Args) ([]by
 // DockerPruneImages just prunes all the images
 func DockerPruneImages(ctx context.Context, pruneFilters filters.Args) ([]byte, error) {
 
-	cli, err := client.NewClientWithOpts()
+	cli, err := client.NewClientWithOpts(client.WithVersion("1.37"))
 	if err != nil {
 		return nil, err
 	}
