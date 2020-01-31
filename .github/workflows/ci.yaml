@@ -7,9 +7,6 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@master
-    - name: Docker PKG Registry Login
-      run:
-        docker login docker.pkg.github.com --username {{ secrets.username}} --password {{secrets.password}}
     - name: Building Docker Image
       env :
         REGISTRY: docker.pkg.github.com
