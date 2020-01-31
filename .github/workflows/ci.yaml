@@ -18,11 +18,14 @@ jobs:
         version: latest
         args: release --snapshot --rm-dist
     - name: Building Docker Image
+      run:
+        docker build -t temporary/kuberd:latest .
+    - name: TAG Docker Image
       env:
         CONTAINER_IMAGE_NAME: pothulapati/kubeker/kubekerd:${{ github.event.number }}
         DOCKER_REGISTRY_URL: docker.pkg.github.com
       run:
-        docker build -t $DOCKER_REGISTRY_URL/$CONTAINER_IMAGE_NAME .
+        docker tag temporary/kuberd:latest $DOCKER_REGISTRY_URL/$CONTAINER_IMAGE_NAME .
     - name: Pushing Image to Github Packages
       uses:  elgohr/Publish-Docker-Github-Action@master
       with:
