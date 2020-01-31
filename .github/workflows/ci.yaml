@@ -7,18 +7,6 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@master
-    - name: Building Docker Image
-      env :
-        REGISTRY: docker.pkg.github.com
-        CONTAINER_IMAGE_NAME: pothulapati/kubeker/kubekerd:${{ github.event.pull_request.number }}
-      run:
-        docker build -t $REGISTRY/$CONTAINER_IMAGE_NAME .
-    - name: Pushing Image to Github Packages
-      env :
-        CONTAINER_IMAGE_NAME: pothulapati/kubeker/kubekerd:${{ github.event.pull_request.number }}
-        REGISTRY: docker.pkg.github.com
-      run:
-        docker push $REGISTRY:$CONTAINER_IMAGE_NAME
     - name: Setup Go
       uses: actions/setup-go@v1
       with:
