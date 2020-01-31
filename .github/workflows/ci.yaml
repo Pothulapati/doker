@@ -18,12 +18,20 @@ jobs:
         version: latest
         args: release --snapshot --rm-dist
     - name: Building Docker Image
+      env:
+        CONTAINER_IMAGE_NAME: Pothulapati/kubeker/kubekerd:${{ github.event.number }}
+        DOCKER_REGISTRY_URL: docker.pkg.github.com
+      run:
+        docker build -t $DOCKER_REGISTRY_URL/$CONTAINER_IMAGE_NAME:latest . 
+    - name: Pushing Image to Github Packages
+      uses:  elgohr/Publish-Docker-Github-Action@master
+      with:
+        name: Pothulapati/kubeker/kubekerd:${{ github.event.number }}
+        username: ${{secrets.GITHUB_PKG_REGISTRY_USERNAME}}
+        password: ${{secrets.GITHUB_PKG_REGISTRY_PASSWORD}}
+        registry: docker.pkg.github.com
+    - name: Uploading Artifacts
       uses: actions/upload-artifact@v1
       with:
         name: gorelease-outputs
         path: dist
-
-    - name: Pushing Image to Github Packages
-
-    - name: Uploading Artifacts
-      uses: 
