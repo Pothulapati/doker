@@ -18,7 +18,7 @@ jobs:
       run: echo ::set-output name=tag::${GITHUB_REF:10}
     - name: Docker PKG Registry Login
       run:
-        docker login --username {{ secrets.username}} --password {{secrets.password}}
+        docker login --username ${{ secrets.username}} --password ${{secrets.password}}
     - name: Building Docker Image
       env :
         RELEASE_VERSION: ${{ steps.vars.outputs.tag }}
