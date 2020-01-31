@@ -8,6 +8,18 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@master
+    - name: Building Docker Image
+      env :
+        CONTAINER_IMAGE_NAME: pothulapati/kubeker/kubekerd:${{ github.event.pull_request.number }}
+      run:
+        docker build -t $CONTAINER_IMAGE_NAME .
+    - name: Pushing Image to Github Packages
+      uses:  elgohr/Publish-Docker-Github-Action@master
+      with:
+        name: pothulapati/kubeker/kubekerd:${{ github.event.pull_request.number }}
+        username: ${{secrets.GITHUB_PKG_REGISTRY_USERNAME}}
+        password: ${{secrets.GITHUB_PKG_REGISTRY_PASSWORD}}
+        registry: docker.pkg.github.com
     - name: Setup Go
       uses: actions/setup-go@v1
       with:
@@ -17,18 +29,6 @@ jobs:
       with:
         version: latest
         args: release --snapshot --rm-dist
-    - name: Building Docker Image
-      env :
-        CONTAINER_IMAGE_NAME: pothulapati/kubeker/kubekerd:${{ .pull_request.number }}
-      run:
-        docker build -t $CONTAINER_IMAGE_NAME .
-    - name: Pushing Image to Github Packages
-      uses:  elgohr/Publish-Docker-Github-Action@master
-      with:
-        name: pothulapati/kubeker/kubekerd:${{ .pull_request.number }}
-        username: ${{secrets.GITHUB_PKG_REGISTRY_USERNAME}}
-        password: ${{secrets.GITHUB_PKG_REGISTRY_PASSWORD}}
-        registry: docker.pkg.github.com
     - name: Uploading Artifacts
       uses: actions/upload-artifact@v1
       with:
