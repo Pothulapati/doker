@@ -22,7 +22,7 @@ jobs:
         CONTAINER_IMAGE_NAME: pothulapati/kubeker/kubekerd:${{ github.event.number }}
         DOCKER_REGISTRY_URL: docker.pkg.github.com
       run:
-        docker build -t $DOCKER_REGISTRY_URL/$CONTAINER_IMAGE_NAME:latest . 
+        docker build -t $DOCKER_REGISTRY_URL/$CONTAINER_IMAGE_NAME .
     - name: Pushing Image to Github Packages
       uses:  elgohr/Publish-Docker-Github-Action@master
       with:
