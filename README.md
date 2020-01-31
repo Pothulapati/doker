@@ -1,8 +1,8 @@
-# Do**k**er
+# Do*k*er
 
 A docker-cli like experience for managing your docker daemons on a kubernetes cluster.
 
-do**k**er is a CLI tool that enables the use of common docker-cli commands but on the context of a kubernetes cluster. It allows users to manage and operate both containers and images mainly by connecting to the docker daemons running on each node in the kubernetes cluster. This is done by running a daemonset which acts like an agent that talks to the docker daemon on the node, and performs tasks.
+*do**k**er* is a CLI tool that enables the use of common docker-cli commands but on the context of a kubernetes cluster. It allows users to manage and operate both containers and images mainly by connecting to the docker daemons running on each node in the kubernetes cluster. This is done by running a daemonset which acts like an agent that talks to the docker daemon on the node, and performs tasks.
 
 ## Features
 
