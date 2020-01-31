@@ -26,7 +26,7 @@ func (l Logger) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 func main() {
 	router := httprouter.New()
 	router.GET("/", func(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
-		w.Write([]byte("Hello, From Kubeker"))
+		w.Write([]byte("Hello, From Kubekerd"))
 
 	})
 	router.POST("/load", handlers.LoadImage)
@@ -70,6 +70,12 @@ func main() {
 		w.Write(imagesResp)
 
 	})
+
+	fmt.Println("Starting Server at 3000")
+	err := http.ListenAndServe("0.0.0.0:3000", Logger{handler: router})
+	if err != nil {
+		log.Fatal(err)
+	}
 }
 
 func init() {
