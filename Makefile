@@ -9,7 +9,7 @@ dep:
 		kubectl apply -f ./deploy/manifests.yaml
 
 plugin:
-		GO111MODULE=on  go build -o kubeker ./cmd/plugin
+		GO111MODULE=on  go build -o kubeker ./cmd/kubeker
 
 release:
 		# Perform a tag here

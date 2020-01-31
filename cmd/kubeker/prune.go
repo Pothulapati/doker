@@ -69,7 +69,7 @@ func newPruneCmd() *cobra.Command {
 
 			for _, pod := range pods.Items {
 				fmt.Println(pod.Spec.NodeName)
-				resp, err := api.SendPodGetRequestWithParams(pod.Name, k8s.ImagesNamespace, "prune", params)
+				resp, err := api.SendPodGetRequestWithParams(pod.Name, k8s.KubekerNamespace, "prune", params)
 				if err != nil {
 					return err
 				}

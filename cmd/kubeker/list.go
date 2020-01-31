@@ -106,7 +106,7 @@ func GetNodeImages(k8sAPI k8s.KubernetesAPI, all bool) ([]Node, error) {
 
 	var Nodes []Node
 	for _, pod := range pods.Items {
-		resp, err := k8sAPI.SendPodGetRequestWithParams(pod.Name, k8s.ImagesNamespace, "list", params)
+		resp, err := k8sAPI.SendPodGetRequestWithParams(pod.Name, k8s.KubekerNamespace, "list", params)
 		if err != nil {
 			return nil, err
 		}

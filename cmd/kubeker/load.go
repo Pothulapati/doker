@@ -36,7 +36,7 @@ func newLoadCmd() *cobra.Command {
 					return err
 				}
 
-				rs, err := api.SendMultiPartHttpRequest(pod.Name, k8s.ImagesNamespace, "load", rc)
+				rs, err := api.SendMultiPartHttpRequest(pod.Name, k8s.KubekerNamespace, "load", rc)
 				if err != nil {
 					return err
 				}
