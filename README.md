@@ -1,17 +1,14 @@
-# Kubernetes Images
+# Do**k**er
 
-A docker-cli like experience for managing your images on your kubernetes cluster.
+A docker-cli like experience for managing your docker daemons on a kubernetes cluster.
 
-Kubernetes Images is a Kubectl plug-in that allows users to manage docker images that are present across their nodes in a Kubernetes Cluster. This requires a daemonSet to be deployed which acts like an agent that talks to the docker daemon on the node, and performs tasks.
-
-The Kubectl plugin gives you a docker-cli like experience but in the context of a Kubernetes cluster i.e multiple docker daemons. 
+do**k**er is a CLI tool that enables the use of common docker-cli commands but on the context of a kubernetes cluster. It allows users to manage and operate both containers and images mainly by connecting to the docker daemons running on each node in the kubernetes cluster. This is done by running a daemonset which acts like an agent that talks to the docker daemon on the node, and performs tasks.
 
 ## Features
 
 - Allows users to load images from the local docker daemon to all the nodes in your remote Kubernetes cluster.
 - Allows users to list images present across all the nodes in the cluster.
-- Allows users to prune images in the kubernetes cluster.
-- Allows to check if an image present in the cluster.
+, etc
 
 
 ## Architecture
