@@ -70,20 +70,6 @@ func main() {
 		w.Write(imagesResp)
 
 	})
-	router.GET("/ps", func(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
-
-		imagesResp, err := docker.ListRunningContainers(r.Context())
-		if err != nil {
-			log.Fatal(err)
-		}
-		w.Write(imagesResp)
-
-	})
-	fmt.Println("Starting Server at 3000")
-	err := http.ListenAndServe("0.0.0.0:3000", Logger{handler: router})
-	if err != nil {
-		log.Fatal(err)
-	}
 }
 
 func init() {
