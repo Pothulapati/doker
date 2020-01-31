@@ -1,15 +1,15 @@
 
 build: 
-		docker build . -t tarunpothulapati/image-loader
+		docker build . -t tarunpothulapati/kubekerd
 
 push: 
-		docker push tarunpothulapati/image-loader
+		docker push tarunpothulapati/kubekerd
 
 dep:
 		kubectl apply -f ./deploy/manifests.yaml
 
 plugin:
-		GO111MODULE=on  go build -o images ./cmd/plugin
+		GO111MODULE=on  go build -o kubeker ./cmd/plugin
 
 release:
 		# Perform a tag here

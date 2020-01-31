@@ -26,7 +26,7 @@ func (l Logger) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 func main() {
 	router := httprouter.New()
 	router.GET("/", func(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
-		w.Write([]byte("hi"))
+		w.Write([]byte("Hello, From Kubeker"))
 
 	})
 	router.POST("/load", handlers.LoadImage)

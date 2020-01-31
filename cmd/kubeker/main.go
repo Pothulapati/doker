@@ -14,10 +14,10 @@ var (
 	verbose        bool
 
 	RootCmd = &cobra.Command{
-		Use:   "images",
-		Short: "A tool to manage Container images in a kubernetes cluster",
-		Long: `images is a CLI tool to manage docker images in your kubernetes cluster.
-It can help you in retrieving, removing, loading container images into your kubernetes node.`,
+		Use:   "kubeker",
+		Short: "A tool to get a docker-cli like experience for your kubernetes cluster",
+		Long: `kubeker is a CLI tool to control or interact with the docker daemons in your kubernetes cluster.
+It can help you manage images (i.e list, load, prune, etc) and containers on your Kubernetes nodes.`,
 	}
 )
 

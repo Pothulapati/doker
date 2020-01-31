@@ -17,9 +17,9 @@ import (
 )
 
 var (
-	ImagesLabel      = "app"
-	ImagesLabelValue = "images"
-	ImagesNamespace  = "default"
+	KubekerAppLabel      = "app"
+	KubekerAppLabelValue = "kubekerd"
+	KubekerNamespace     = "default"
 )
 
 type KubernetesAPI struct {
@@ -45,7 +45,7 @@ func NewKubernetesAPI(kubeConfigPath, kubeContext string) (*KubernetesAPI, error
 }
 
 func (k *KubernetesAPI) GetPodsWithDefaultLabels() (*v1.PodList, error) {
-	pods, err := k.CoreV1().Pods(ImagesNamespace).List(v12.ListOptions{LabelSelector: fmt.Sprintf("%s=%s", ImagesLabel, ImagesLabelValue)})
+	pods, err := k.CoreV1().Pods(KubekerNamespace).List(v12.ListOptions{LabelSelector: fmt.Sprintf("%s=%s", KubekerAppLabel, KubekerAppLabelValue)})
 	if err != nil {
 		return nil, err
 	}

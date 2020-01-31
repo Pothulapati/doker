@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
-  name: image-loader
+  name: kubeker-ds
   namespace: default
   labels:
-    app: images
+    app: kubekerd
 spec:
   selector:
     matchLabels:
-      app: images
+      app: kubekerd
   template:
     metadata:
       labels:
-        app: images
+        app: kubekerd
     spec:
       containers:
-      - name: image-loader
-        image: tarunpothulapati/image-loader
+      - name: kubekerd
+        image: tarunpothulapati/kubekerd:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 3000
