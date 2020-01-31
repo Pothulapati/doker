@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
-  name: kubeker-ds
+  name: doker-ds
   namespace: default
   labels:
-    app: kubekerd
+    app: dokerd
 spec:
   selector:
     matchLabels:
-      app: kubekerd
+      app: dokerd
   template:
     metadata:
       labels:
-        app: kubekerd
+        app: dokerd
     spec:
       containers:
-      - name: kubekerd
-        image: tarunpothulapati/kubekerd:latest
+      - name: dokerd
+        image: tarunpothulapati/dokerd:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 3000

@@ -17,9 +17,9 @@ import (
 )
 
 var (
-	KubekerAppLabel      = "app"
-	KubekerAppLabelValue = "kubekerd"
-	KubekerNamespace     = "default"
+	DokerAppLabel      = "app"
+	DokerAppLabelValue = "dokerd"
+	DokerNamespace     = "default"
 )
 
 type KubernetesAPI struct {
@@ -45,7 +45,7 @@ func NewKubernetesAPI(kubeConfigPath, kubeContext string) (*KubernetesAPI, error
 }
 
 func (k *KubernetesAPI) GetPodsWithDefaultLabels() (*v1.PodList, error) {
-	pods, err := k.CoreV1().Pods(KubekerNamespace).List(v12.ListOptions{LabelSelector: fmt.Sprintf("%s=%s", KubekerAppLabel, KubekerAppLabelValue)})
+	pods, err := k.CoreV1().Pods(DokerNamespace).List(v12.ListOptions{LabelSelector: fmt.Sprintf("%s=%s", DokerAppLabel, DokerAppLabelValue)})
 	if err != nil {
 		return nil, err
 	}

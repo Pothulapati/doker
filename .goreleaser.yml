@@ -4,14 +4,14 @@ before:
   hooks:
     - go mod download
 builds:
-- id: kubeker
-  main: ./cmd/kubeker
-  binary: kubeker
+- id: doker
+  main: ./cmd/doker
+  binary: doker
   env:
   - CGO_ENABLED=0
-- id: kubekerd
-  main: ./cmd/kubekerd
-  binary: kubekerd
+- id: dokerd
+  main: ./cmd/dokerd
+  binary: dokerd
   env:
   - CGO_ENABLED=0
 

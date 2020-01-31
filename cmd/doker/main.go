@@ -14,9 +14,9 @@ var (
 	verbose        bool
 
 	RootCmd = &cobra.Command{
-		Use:   "kubeker",
+		Use:   "doker",
 		Short: "A tool to get a docker-cli like experience for your kubernetes cluster",
-		Long: `kubeker is a CLI tool to control or interact with the docker daemons in your kubernetes cluster.
+		Long: `doker is a CLI tool to control or interact with the docker daemons in your kubernetes cluster.
 It can help you manage images (i.e list, load, prune, etc) and containers on your Kubernetes nodes.`,
 	}
 )

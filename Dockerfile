@@ -10,7 +10,7 @@ RUN go mod download
 
 COPY . ./
 
-RUN go build -o main ./cmd/kubekerd
+RUN go build -o main ./cmd/dokerd
 
 EXPOSE 8080
 

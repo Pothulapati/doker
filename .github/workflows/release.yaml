@@ -22,13 +22,13 @@ jobs:
     - name: Building Docker Image
       env :
         RELEASE_VERSION: ${{ steps.vars.outputs.tag }}
-        CONTAINER_IMAGE_NAME: tarunpothulapati/kubekerd
+        CONTAINER_IMAGE_NAME: tarunpothulapati/dokerd
       run:
         docker build -t $CONTAINER_IMAGE_NAME:$RELEASE_VERSION .
     - name: Pushing Image to Github Packages
       env :
         RELEASE_VERSION: ${{ steps.vars.outputs.tag }}
-        CONTAINER_IMAGE_NAME: tarunpothulapati/kubekerd
+        CONTAINER_IMAGE_NAME: tarunpothulapati/dokerd
       run:
         docker push $CONTAINER_IMAGE_NAME:$RELEASE_VERSION
     - name: GoReleaser
