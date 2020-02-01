@@ -47,7 +47,8 @@ esac
 tmpdir=$(mktemp -d /tmp/DOKER.XXXXXX)
 srcfile="doker_${DOKER_VERSION}_${OS}_${arch}"
 dstfile="${INSTALLROOT}/bin/doker_${DOKER_VERSION}_${OS}_${arch}"
-url="https://github.com/pothulapati/doker/releases/${DOKER_VERSION}/download/${srcfile}"
+url="https://github.com/pothulapati/doker/releases/download/${DOKER_VERSION}/${srcfile}"
+echo $url
 
 (
   cd "$tmpdir"
@@ -70,6 +71,6 @@ url="https://github.com/pothulapati/doker/releases/${DOKER_VERSION}/download/${s
 
 rm -r "$tmpdir"
 
-echo "doker ${DOKER_VERSION} was successfully installed 🎉"
+echo "doker ${DOKER_VERSION} was successfully installed"
 echo ""
 happyexit
