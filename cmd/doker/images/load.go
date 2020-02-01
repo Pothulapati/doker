@@ -5,11 +5,12 @@ import (
 	"fmt"
 	"image-loader/pkg/docker"
 	"image-loader/pkg/k8s"
+	"strings"
 
 	"github.com/spf13/cobra"
 )
 
-func newLoadCmd() *cobra.Command {
+func NewLoadCmd() *cobra.Command {
 
 	// checkCmd represent kubectl pg check.
 	var loadCmd = &cobra.Command{
@@ -29,7 +30,7 @@ func newLoadCmd() *cobra.Command {
 
 			for _, pod := range pods.Items {
 
-				fmt.Println("Loading images to ", pod.Spec.NodeName)
+				fmt.Println("Loading images to ", strings.Trim(pod.Spec.NodeName, " "))
 				// Talk to the docker client and save the image into a file
 				rc, err := docker.GetDockerImages(context.Background(), args)
 				if err != nil {

@@ -17,7 +17,7 @@ func NewImagesCmd() *cobra.Command {
 		Short: "Manage Images in your kubernetes cluster.",
 	}
 
-	imagesCmd.AddCommand(newLoadCmd())
+	imagesCmd.AddCommand(NewLoadCmd())
 	imagesCmd.AddCommand(newPruneCmd())
 	imagesCmd.AddCommand(NewListCmd())
 

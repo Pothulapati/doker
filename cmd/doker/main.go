@@ -21,7 +21,7 @@ func init() {
 	RootCmd.AddCommand(images.NewImagesCmd())
 
 	// Also add images command alias
-	var subAlias = &cobra.Command{
+	var imagesAlias = &cobra.Command{
 		Use:   "images",
 		Short: "alias for image list",
 		RunE: func(cmd *cobra.Command, args []string) error {
@@ -29,7 +29,18 @@ func init() {
 		},
 	}
 
-	RootCmd.AddCommand(subAlias)
+	RootCmd.AddCommand(imagesAlias)
+
+	// Also add images command alias
+	var loadAlias = &cobra.Command{
+		Use:   "load",
+		Short: "alias for image load",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return images.NewLoadCmd().RunE(cmd,args)
+		},
+	}
+
+	RootCmd.AddCommand(loadAlias)
 }
 
 func main() {

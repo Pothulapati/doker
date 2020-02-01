@@ -31,6 +31,5 @@ spec:
       - name: host-run
         hostPath:
           path: /var/run/docker.sock
-      hostNetwork: true
       hostPID: true
       restartPolicy: Always

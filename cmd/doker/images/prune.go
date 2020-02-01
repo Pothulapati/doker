@@ -19,9 +19,9 @@ import (
 )
 
 const (
-	allImageWarning = `WARNING! This will remove all images without at least one container associated to them.
+	allImageWarning = `WARNING! This will remove all images in all nodes without at least one container associated to them.
 Are you sure you want to continue?`
-	danglingWarning = `WARNING! This will remove all dangling images.
+	danglingWarning = `WARNING! This will remove all dangling images in all nodes.
 Are you sure you want to continue?`
 )
 
