@@ -3,6 +3,7 @@
 set -eu
 
 INSTALLROOT=${INSTALLROOT:-"${HOME}/.doker"}
+DOKER_VERSION=${DOKER_VERSION:-"v0.1.0"}
 
 happyexit() {
   echo ""
@@ -73,9 +74,9 @@ checksumbin=$(command -v openssl) || checksumbin=$(command -v shasum) || {
 
 
 tmpdir=$(mktemp -d /tmp/DOKER.XXXXXX)
-srcfile="doker_${OS}_${arch}"
-dstfile="${INSTALLROOT}/bin/doker_${OS}_${arch}"
-url="https://github.com/pothulapati/doker/releases/latest/download/${srcfile}"
+srcfile="doker_${DOKER_VERSION}_${OS}_${arch}"
+dstfile="${INSTALLROOT}/bin/doker_${DOKER_VERSION}_${OS}_${arch}"
+url="https://github.com/pothulapati/doker/releases/${DOKER_VERSION}/download/${srcfile}"
 
 if [ -e "${dstfile}" ]; then
   if validate_checksum "${dstfile}"; then
