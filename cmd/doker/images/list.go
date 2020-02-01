@@ -1,4 +1,4 @@
-package main
+package images
 
 import (
 	"encoding/json"
@@ -31,14 +31,15 @@ type imagesOptions struct {
 	filter      opts.FilterOpt
 }
 
-func newListCmd() *cobra.Command {
+func NewListCmd() *cobra.Command {
 
 	options := imagesOptions{filter: opts.NewFilterOpt()}
 
 	// checkCmd represent kubectl pg check.
-	var listCmd = &cobra.Command{
+	var imagesCmd = &cobra.Command{
 		Use:   "list",
 		Short: "list gets all the images in the nodes present in the cluster.",
+		Aliases: []string{"ls"},
 		RunE: func(cmd *cobra.Command, args []string) error {
 			if len(args) > 0 {
 				options.matchName = args[0]
@@ -73,12 +74,10 @@ func newListCmd() *cobra.Command {
 			return nil
 		},
 		Example: `
-images list
-images list -l
-`,
+images`,
 	}
 
-	flags := listCmd.Flags()
+	flags := imagesCmd.Flags()
 
 	flags.BoolVarP(&options.quiet, "quiet", "q", false, "Only show numeric IDs")
 	flags.BoolVarP(&options.all, "all", "a", false, "Show all images (default hides intermediate images)")
@@ -87,7 +86,7 @@ images list -l
 	flags.StringVar(&options.format, "format", formatter.TableFormatKey, "Pretty-print images using a Go template")
 	flags.VarP(&options.filter, "filter", "f", "Filter output based on conditions provided")
 
-	return listCmd
+	return imagesCmd
 }
 
 // GetNodeImages talks to the Kubernetes API and gets all the images from all nodes

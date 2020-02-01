@@ -1,18 +1,14 @@
 package main
 
 import (
+	"image-loader/cmd/doker/images"
 	"os"
 
 	"github.com/spf13/cobra"
 )
 
 var (
-	apiAddr        string // An empty value means "use the Kubernetes configuration"
-	kubeconfigPath string
-	kubeContext    string
-	impersonate    string
-	verbose        bool
-
+	// RootCmd is the main parent doker cmd
 	RootCmd = &cobra.Command{
 		Use:   "doker",
 		Short: "A tool to get a docker-cli like experience for your kubernetes cluster",
@@ -22,14 +18,18 @@ It can help you manage images (i.e list, load, prune, etc) and containers on you
 )
 
 func init() {
-	RootCmd.PersistentFlags().StringVar(&kubeconfigPath, "kubeconfig", "", "Path to the kubeconfig file to use for CLI requests")
-	RootCmd.PersistentFlags().StringVar(&kubeContext, "context", "", "Name of the kubeconfig context to use")
-	RootCmd.PersistentFlags().StringVar(&impersonate, "as", "", "Username to impersonate for Kubernetes operations")
-	RootCmd.PersistentFlags().StringVar(&apiAddr, "api-addr", "", "Override kubeconfig and communicate directly with the control plane at host:port (mostly for testing)")
-	RootCmd.PersistentFlags().BoolVar(&verbose, "verbose", false, "Turn on debug logging")
-	RootCmd.AddCommand(newListCmd())
-	RootCmd.AddCommand(newPruneCmd())
-	RootCmd.AddCommand(newLoadCmd())
+	RootCmd.AddCommand(images.NewImagesCmd())
+
+	// Also add images command alias
+	var subAlias = &cobra.Command{
+		Use:   "images",
+		Short: "alias for image list",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return images.NewListCmd().RunE(cmd,args)
+		},
+	}
+
+	RootCmd.AddCommand(subAlias)
 }
 
 func main() {
