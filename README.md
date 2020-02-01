@@ -18,7 +18,6 @@ Now, *do**k**er* (this project's cli tool) can be installed by running
 
 ```bash
  curl -sL https://raw.githubusercontent.com/Pothulapati/doker/master/bin/install.sh | sh
- export PATH=$PATH:/home/tarun/.doker/bin
 ```
 
 ## Demo
