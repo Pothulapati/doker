@@ -9,17 +9,17 @@ builds:
   binary: doker
   env:
   - CGO_ENABLED=0
-- id: dokerd
-  main: ./cmd/dokerd
-  binary: dokerd
-  env:
-  - CGO_ENABLED=0
 
 archives:
 - builds:
-  - doker
+  id: doker-binary
   name_template: "{{ .ProjectName }}_{{ .Tag }}_{{ .Os }}_{{ .Arch }}"
   wrap_in_directory: false
   format: binary
+- builds:
+  id: doker-tar
+  name_template: "{{ .ProjectName }}_{{ .Tag }}_{{ .Os }}_{{ .Arch }}"
+  wrap_in_directory: false
+  format: tar.gz
   files:
-  - LICENSE
+  - none*'
